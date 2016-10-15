@@ -10,10 +10,10 @@ Project theme: **Sound**
 
 Group:
 
-> Benedict Greenberg  
+> **Benedict Greenberg  
 > Keshav Jagan  
 > 3  
-> 4
+> 4**
 
 ## DE2-GIZ Group Project on Sound
 
