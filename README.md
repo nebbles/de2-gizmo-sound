@@ -6,14 +6,14 @@ Design Engineering MEng
 Module: **Gizmo**  
 Project theme: **Sound**  
 
-Group:
-Benedict Greenberg
-Keshav Jagan
-..
-..
-
 *Autumn 2016*
 
+Group:
+
+> Benedict Greenberg  
+> Keshav Jagan  
+> 3  
+> 4
 
 ## DE2-GIZ Group Project on Sound
 
