@@ -8,12 +8,12 @@ Project theme: **Sound**
 
 *Autumn 2016*
 
-Group:
+Group: *name*
 
 > **Benedict Greenberg  
 > Keshav Jagan  
 > 3  
 > 4**
 
-## DE2-GIZ Group Project on Sound
+## DE2 Gizmo Group Project on Sound
 
