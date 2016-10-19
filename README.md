@@ -8,7 +8,7 @@ Project theme: **Sound**
 
 *Autumn 2016*
 
-Group: *name*
+Group 1: *name*
 
 > **Benedict Greenberg  
 > Keshav Jagan  
