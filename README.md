@@ -12,8 +12,8 @@ Group: *name*
 
 > **Benedict Greenberg  
 > Keshav Jagan  
-> 3  
-> 4**
+> Leah Pattison  
+> Will Pepera**
 
 ## DE2 Gizmo Group Project on Sound
 
