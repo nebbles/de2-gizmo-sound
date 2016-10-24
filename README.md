@@ -10,10 +10,10 @@ Project theme: **Sound**
 
 Group 1: *name*
 
-**Benedict Greenberg (@nebbles)  
-Keshav Jagan (@keshav1197)  
-Leah Pattison (@leahpattison)  
-Will Pepera (@dildo-swaggins)**
+> **Benedict Greenberg (@nebbles)  
+> Keshav Jagan (@keshav1197)  
+> Leah Pattison (@leahpattison)  
+> Will Pepera (@dildo-swaggins)**
 
 ## DE2 Gizmo Group Project on Sound
 
