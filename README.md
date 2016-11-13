@@ -8,7 +8,7 @@ Project theme: **Sound**
 
 *Autumn 2016*
 
-Group 1: *name*
+Group 1: **STOMP**
 
 > **Benedict Greenberg (@nebbles)  
 > Keshav Jagan (@keshav1197)  
@@ -16,4 +16,3 @@ Group 1: *name*
 > Will Pepera (@dildo-swaggins)**
 
 ## DE2 Gizmo Group Project on Sound
-
