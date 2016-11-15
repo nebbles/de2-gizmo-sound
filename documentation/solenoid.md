@@ -7,7 +7,7 @@ solenoid.py is a test file for running the solenoid set up. Circuit diagram can 
 | 11          | Input port      | Button press
 | 16          | Output port     | Middle pin of transitor (open circuit for LED/Solenoid activation)
 
-1 - blue
-6 - orange
-11 - yellow
+1 - blue  
+6 - orange  
+11 - yellow  
 16 - green
