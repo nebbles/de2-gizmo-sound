@@ -29,7 +29,7 @@ try:
         if GPIO.input(butPin):  # button is released
             GPIO.output(solenoidpin, GPIO.LOW)
         else:  # button is pressed:
-            GPIO.output(ledPin, GPIO.HIGH)
+            GPIO.output(solenoidpin, GPIO.HIGH)
 
 
 except KeyboardInterrupt:  # If CTRL+C is pressed, exit cleanly:
