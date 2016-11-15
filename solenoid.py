@@ -28,8 +28,10 @@ try:
         # indicating whether the pin is HIGH or LOW.
         if GPIO.input(butPin):  # button is released
             GPIO.output(solenoidpin, GPIO.LOW)
+            print("Button released")
         else:  # button is pressed:
             GPIO.output(solenoidpin, GPIO.HIGH)
+            print("Button pressed")
 
 
 except KeyboardInterrupt:  # If CTRL+C is pressed, exit cleanly:
