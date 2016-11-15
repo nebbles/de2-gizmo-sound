@@ -20,6 +20,7 @@ GPIO.setup(solenoidpin, GPIO.OUT)  # LED pin set as output
 # Button pin set as input w/ pull-up resistors
 GPIO.setup(butPin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
+flag = True
 
 print("Press button to activate solenoid. Press CTRL+C to exit")
 try:
@@ -28,10 +29,14 @@ try:
         # indicating whether the pin is HIGH or LOW.
         if GPIO.input(butPin):  # button is released
             GPIO.output(solenoidpin, GPIO.LOW)
-            print("Button released")
+            if flag:
+                print("Button released")
+                flag = False
         else:  # button is pressed:
             GPIO.output(solenoidpin, GPIO.HIGH)
-            print("Button pressed")
+            if not flag:
+                print("Button pressed")
+                flag = True
 
 
 except KeyboardInterrupt:  # If CTRL+C is pressed, exit cleanly:
