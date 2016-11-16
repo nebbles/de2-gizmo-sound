@@ -1,0 +1,14 @@
+step interval = 0.25 seconds
+x = step interval - time to execute
+
+loop (
+	start timer
+	read step in step list
+	for each step, read instruments
+	trigger instrument pins
+	time delay
+	release instrument pins
+	stop timer, timer = time to execute
+	wait for x seconds
+)
+
