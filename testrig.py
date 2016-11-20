@@ -23,7 +23,7 @@ import timeit
 start_time = timeit.default_timer()
 elapsed = timeit.default_timer() - start_time
 
-shouldLoop = False
+stopLoop = True # default behaviour is to stop loop after first iteration
 args = sys.argv[1:]
 timeinterval = 0.5
 inputfile = "example.txt"
@@ -41,7 +41,7 @@ for arg in args:
         print "2: <filename>"
         sys.exit()
     elif arg == 'loop':
-        shouldLoop = True
+        stopLoop = False
     else:
         inputfile = arg
 
@@ -63,7 +63,7 @@ GPIO.setup(led3, GPIO.OUT)  # LED pin set as output
 
 # Start up feedback
 print("LED Test Rig. Press CTRL+C to exit")
-if shouldLoop:
+if not stopLoop:
     loopstatement = "Program will loop."
 else:
     loopstatement = "Program will not loop and will exit upon completion."
@@ -96,6 +96,9 @@ try:
             GPIO.output(led1, GPIO.LOW)
             GPIO.output(led2, GPIO.LOW)
             GPIO.output(led3, GPIO.LOW)
+
+            if stopLoop = True:
+                shouldLoop = False
 
 
 except KeyboardInterrupt:  # If CTRL+C is pressed, exit cleanly:
