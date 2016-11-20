@@ -28,22 +28,22 @@ GPIO.setup(led3, GPIO.OUT)  # LED pin set as output
 
 flag = True # Flag to prevent looping print statement
 
-tune = [[100],
-[110],
-[100],
-[111],
-[100],
-[110],
-[100],
-[111],
-[100],
-[110],
-[100],
-[111],
-[100],
-[110],
-[100],
-[111]]
+tune = [[100],\
+        [110],\
+        [100],\
+        [111],\
+        [100],\
+        [110],\
+        [100],\
+        [111],\
+        [100],\
+        [110],\
+        [100],\
+        [111],\
+        [100],\
+        [110],\
+        [100],\
+        [111]]
 
 
 print("Test LEDs one by one. Press CTRL+C to exit")
