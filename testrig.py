@@ -26,7 +26,7 @@ elapsed = timeit.default_timer() - start_time
 shouldLoop = False
 args = sys.argv[1:]
 timeinterval = 0.5
-inputfile = "example.py"
+inputfile = "example.txt"
 
 if len(args) > 2:
     print "Program can only accept 2 arguments:"
@@ -46,7 +46,7 @@ for arg in args:
         inputfile = arg
 
 ## -- IMPORT TUNE FROM FILE -- ##
-infile = open("example.py", "r") # Open data file -- "r" is for read
+infile = open(inputfile, "r") # Open data file -- "r" is for read
 tune = [line.rstrip('\n') for line in infile]
 infile.close() # Close the filehandle
 
