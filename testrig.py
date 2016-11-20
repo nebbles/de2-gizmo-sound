@@ -79,7 +79,7 @@ try:
 
             hit1, hit2, hit3 = False, False, False
             notes = tune[index]
-            print index, " ", notes
+            print start_time, index, notes
 
             if notes[0] == '1': hit1 = True
             if notes[1] == '1': hit2 = True
@@ -89,10 +89,11 @@ try:
             if hit2: GPIO.output(led2, GPIO.HIGH)
             if hit3: GPIO.output(led3, GPIO.HIGH)
 
-            elapsed = timeit.default_timer() - start_time
-            print elapsed
+            execution_time = timeit.default_timer() - start_time
+            print "Execution time: ", execution_time
 
-            time.sleep(timeinterval)
+            sleeptime = timeinterval - execution_time
+            time.sleep(sleeptime)
 
             GPIO.output(led1, GPIO.LOW)
             GPIO.output(led2, GPIO.LOW)
