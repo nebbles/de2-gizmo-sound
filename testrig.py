@@ -73,7 +73,7 @@ try:
         if hit3:
             GPIO.output(led3, GPIO.HIGH)
 
-        sleep(t)
+        time.sleep(t)
         GPIO.output(led1, GPIO.LOW)
         GPIO.output(led2, GPIO.LOW)
         GPIO.output(led3, GPIO.LOW)
