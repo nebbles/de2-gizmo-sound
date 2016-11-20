@@ -97,7 +97,7 @@ try:
             GPIO.output(led2, GPIO.LOW)
             GPIO.output(led3, GPIO.LOW)
 
-            if stopLoop = True:
+            if stopLoop == True:
                 shouldLoop = False
 
 
