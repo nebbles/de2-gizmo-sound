@@ -74,6 +74,8 @@ try:
             GPIO.output(led3, GPIO.HIGH)
 
         time.sleep(t)
+        index += 1
+        
         GPIO.output(led1, GPIO.LOW)
         GPIO.output(led2, GPIO.LOW)
         GPIO.output(led3, GPIO.LOW)
