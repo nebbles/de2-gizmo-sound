@@ -46,7 +46,7 @@ for arg in args:
         inputfile = arg
 
 ## -- IMPORT TUNE FROM FILE -- ##
-infile = open(str(inputfile), "r") # Open data file -- "r" is for read
+infile = open("example.py", "r") # Open data file -- "r" is for read
 tune = [line.rstrip('\n') for line in infile]
 infile.close() # Close the filehandle
 
