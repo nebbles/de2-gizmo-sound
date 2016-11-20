@@ -54,18 +54,21 @@ index = 0
 try:
     while True:
 
-        if index == 16:
+        if index == len(tune):
             index = 0
 
         hit1, hit2, hit3 = False, False, False
 
         notes = tune[index]
         print notes
-        if notes[0] == 1:
+        if notes[0] == '1':
+            print 'hit1 true'
             hit1 = True
-        if notes[1] == 1:
+        if notes[1] == '1':
+            print 'hit2 true'
             hit2 = True
-        if notes[2] == 1:
+        if notes[2] == '1':
+            print 'hit3 true'
             hit3 = True
 
         if hit1:
