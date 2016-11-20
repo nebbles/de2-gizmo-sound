@@ -15,3 +15,6 @@ infile.close()
 
 print tune
 print lines
+print lines[4][0]
+print lines[4][1]
+print lines[4][2]
