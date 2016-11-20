@@ -28,19 +28,56 @@ GPIO.setup(led3, GPIO.OUT)  # LED pin set as output
 
 flag = True # Flag to prevent looping print statement
 
+tune = [[100],
+[110],
+[100],
+[111],
+[100],
+[110],
+[100],
+[111],
+[100],
+[110],
+[100],
+[111],
+[100],
+[110],
+[100],
+[111]]
+
+
 print("Test LEDs one by one. Press CTRL+C to exit")
 t = 0.5
+index = 0
 try:
     while 1:
-        GPIO.output(led1, GPIO.HIGH)
-        time.sleep(t)
+
+        if index == 16:
+            index = 0
+
+        hit1, hit2, hit3 = False, False, False
+
+        notes = tune[index]
+        if notes[0] = 1:
+            hit1 = True
+        if notes[1] = 1:
+            hit2 = True
+        if notes[2] = 1:
+            hit3 = True
+
+        if hit1:
+            GPIO.output(led1, GPIO.HIGH)
+        if hit2:
+            GPIO.output(led2, GPIO.HIGH)
+        if hit3:
+            GPIO.output(led3, GPIO.HIGH)
+
+        sleep(t)
         GPIO.output(led1, GPIO.LOW)
-        GPIO.output(led2, GPIO.HIGH)
-        time.sleep(t)
         GPIO.output(led2, GPIO.LOW)
-        GPIO.output(led3, GPIO.HIGH)
-        time.sleep(t)
         GPIO.output(led3, GPIO.LOW)
+
+
 
 
 
