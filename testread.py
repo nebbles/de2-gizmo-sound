@@ -6,7 +6,6 @@ tune = [line.rstrip('\n') for line in infile]
 infile.close() # Close the filehandle
 
 print tune
-print lines
-print lines[4][0]
-print lines[4][1]
-print lines[4][2]
+print tune[4][0]
+print tune[4][1]
+print tune[4][2]
