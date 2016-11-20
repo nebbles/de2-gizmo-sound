@@ -51,12 +51,14 @@ GPIO.setup(led3, GPIO.OUT)  # LED pin set as output
 print("LED Test Rig. Example file will play repetitively until exit. Press CTRL+C to exit")
 t = 0.5
 index = 0
+loop = 1
 try:
     while True:
 
-        if index == len(tune):
-            index = 0
+        # if index == len(tune):
+        #     index = 0
 
+        print index
         hit1, hit2, hit3 = False, False, False
 
         notes = tune[index]
