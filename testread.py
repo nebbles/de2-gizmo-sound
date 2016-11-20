@@ -2,7 +2,7 @@
 
 # Open data file
 infile = open("example.txt", "r") # "r" is for read
-lines = [line.rstrip('\n') for line in open("example.txt", "r")]
+lines = [line.rstrip('\n') for line in infile]
 
 # Initialise empty lists
 tune = []
@@ -12,7 +12,6 @@ tune = []
 
 # Close the filehandle
 infile.close()
-f.close()
 
 print tune
 print lines
