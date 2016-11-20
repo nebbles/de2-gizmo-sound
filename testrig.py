@@ -29,16 +29,17 @@ GPIO.setup(led3, GPIO.OUT)  # LED pin set as output
 flag = True # Flag to prevent looping print statement
 
 print("Test LEDs one by one. Press CTRL+C to exit")
+t = 0.5
 try:
     while 1:
         GPIO.output(led1, GPIO.HIGH)
-        time.sleep(1)
+        time.sleep(t)
         GPIO.output(led1, GPIO.LOW)
         GPIO.output(led2, GPIO.HIGH)
-        time.sleep(1)
+        time.sleep(t)
         GPIO.output(led2, GPIO.LOW)
         GPIO.output(led3, GPIO.HIGH)
-        time.sleep(1)
+        time.sleep(t)
         GPIO.output(led3, GPIO.LOW)
 
 
