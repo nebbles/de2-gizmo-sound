@@ -58,11 +58,11 @@ try:
         hit1, hit2, hit3 = False, False, False
 
         notes = tune[index]
-        if notes[0] = 1:
+        if notes[0] == 1:
             hit1 = True
-        if notes[1] = 1:
+        if notes[1] == 1:
             hit2 = True
-        if notes[2] = 1:
+        if notes[2] == 1:
             hit3 = True
 
         if hit1:
