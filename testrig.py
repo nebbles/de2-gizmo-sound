@@ -82,4 +82,7 @@ try:
 
 
 except KeyboardInterrupt:  # If CTRL+C is pressed, exit cleanly:
+    print 'KeyboardInterrupt occured'
+
+finally:
     GPIO.cleanup()  # cleanup all GPIO
