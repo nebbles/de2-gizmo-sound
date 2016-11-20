@@ -1,17 +1,9 @@
 # test file
 
-# Open data file
-infile = open("example.txt", "r") # "r" is for read
-lines = [line.rstrip('\n') for line in infile]
-
-# Initialise empty lists
-tune = []
-
-# Loop through infile and write to x and y lists
-
-
-# Close the filehandle
-infile.close()
+## -- IMPORT TUNE FROM FILE -- ##
+infile = open("example.txt", "r") # Open data file -- "r" is for read
+tune = [line.rstrip('\n') for line in infile]
+infile.close() # Close the filehandle
 
 print tune
 print lines

@@ -14,6 +14,10 @@ GPIO Pin    Purpose         Connected to
 import RPi.GPIO as GPIO # External module imports GPIO
 import time # Library to slow or give a rest to the script
 
+## -- IMPORT TUNE FROM FILE -- ##
+infile = open("example.txt", "r") # Open data file -- "r" is for read
+tune = [line.rstrip('\n') for line in infile]
+infile.close() # Close the filehandle
 
 # Pin definiton using Broadcom scheme
 led1 = 17  # Broadcom pin 17 (P1 pin 11)
@@ -26,31 +30,29 @@ GPIO.setup(led1, GPIO.OUT)  # LED pin set as output
 GPIO.setup(led2, GPIO.OUT)  # LED pin set as output
 GPIO.setup(led3, GPIO.OUT)  # LED pin set as output
 
-flag = True # Flag to prevent looping print statement
-
-tune = [[1,0,0],\
-        [1,1,0],\
-        [1,0,0],\
-        [1,1,1],\
-        [1,0,0],\
-        [1,1,0],\
-        [1,0,0],\
-        [1,1,1],\
-        [1,0,0],\
-        [1,1,0],\
-        [1,0,0],\
-        [1,1,1],\
-        [1,0,0],\
-        [1,1,0],\
-        [1,0,0],\
-        [1,1,1]]
+# tune = [[1,0,0],\
+#         [1,1,0],\
+#         [1,0,0],\
+#         [1,1,1],\
+#         [1,0,0],\
+#         [1,1,0],\
+#         [1,0,0],\
+#         [1,1,1],\
+#         [1,0,0],\
+#         [1,1,0],\
+#         [1,0,0],\
+#         [1,1,1],\
+#         [1,0,0],\
+#         [1,1,0],\
+#         [1,0,0],\
+#         [1,1,1]]
 
 
-print("Test LEDs one by one. Press CTRL+C to exit")
+print("LED Test Rig. Example file will play repetitively until exit. Press CTRL+C to exit")
 t = 0.5
 index = 0
 try:
-    while 1:
+    while True:
 
         if index == 16:
             index = 0
@@ -75,7 +77,7 @@ try:
 
         time.sleep(t)
         index += 1
-        
+
         GPIO.output(led1, GPIO.LOW)
         GPIO.output(led2, GPIO.LOW)
         GPIO.output(led3, GPIO.LOW)
