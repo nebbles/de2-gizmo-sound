@@ -23,6 +23,7 @@ import timeit
 start_time = timeit.default_timer()
 elapsed = timeit.default_timer() - start_time
 
+shouldLoop = True # loop needs to be iniated at least one time
 stopLoop = True # default behaviour is to stop loop after first iteration
 args = sys.argv[1:]
 timeinterval = 0.5
