@@ -7,7 +7,7 @@ infile = open("example.txt", "r") # "r" is for read
 tune = []
 
 # Loop through infile and write to x and y lists
-for line in infile:
+for line in infile.readlines():
     tune.append(str(line))
 
 # Close the filehandle
