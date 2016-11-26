@@ -133,4 +133,4 @@
 
 Displaying latest version of circuit diagram.
 
-![](circuit_diagrams/final.png)
+![](circuit_diagrams/complete_circuit.png)
