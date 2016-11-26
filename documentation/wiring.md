@@ -62,7 +62,7 @@
     <td>Gate pin of transistor sol-4</td>
   </tr>
   <tr>
-    <td rowspan="4">MS1</td>
+    <td>MS1/CS1</td>
     <td>GRND</td>
     <td>14</td>
     <td>-</td>
@@ -71,6 +71,7 @@
     <td>GRND of MotorSystem</td>
   </tr>
   <tr>
+    <td>MS1</td>
     <td>MOT1</td>
     <td>12</td>
     <td>18</td>
@@ -79,6 +80,7 @@
     <td><i>to motor driver...</i></td>
   </tr>
   <tr>
+    <td rowspan="2">CS1</td>
     <td>MS1</td>
     <td>16</td>
     <td>23</td>
@@ -133,4 +135,4 @@
 
 Displaying latest version of circuit diagram.
 
-![](circuit_diagrams/complete_circuit.png)
+![](circuit_diagrams/complete-circuit.png)
