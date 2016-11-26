@@ -97,32 +97,32 @@
   <tr>
     <td rowspan="4">LS1</td>
     <td>GRND</td>
-    <td></td>
-    <td></td>
+    <td>34</td>
+    <td>-</td>
     <td></td>
     <td>Common ground</td>
     <td>GRND of LightSystem</td>
   </tr>
   <tr>
     <td>L1</td>
-    <td></td>
-    <td></td>
+    <td>32</td>
+    <td>12</td>
     <td></td>
     <td>I/O Output</td>
     <td>Light 1</td>
   </tr>
   <tr>
     <td>L2</td>
-    <td></td>
-    <td></td>
+    <td>33</td>
+    <td>13</td>
     <td></td>
     <td>I/O Output</td>
     <td>Light 2</td>
   </tr>
   <tr>
     <td>L3</td>
-    <td></td>
-    <td></td>
+    <td>36</td>
+    <td>16</td>
     <td></td>
     <td>I/O Output</td>
     <td>Light 3</td>
@@ -133,4 +133,4 @@
 
 Displaying latest version of circuit diagram.
 
-![]()
+![](circuit_diagrams/final.png)
