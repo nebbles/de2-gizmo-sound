@@ -11,11 +11,11 @@ from __future__ import print_function
 
 def startup():
     startup_message = "motortest.py running..."
-    print "motortest.py running..."
-    print "This program uses the MotorSystem and ControlSystem circuits."
-    print "Connect GPIO pin 16 to microswitch"
-    print "Connect GPIO pin 18 to LED"
-    print "Connect GPIO pin 12 to transistor gate"
+    print("motortest.py running...")
+    print("This program uses the MotorSystem and ControlSystem circuits.")
+    print("Connect GPIO pin 16 to microswitch")
+    print("Connect GPIO pin 18 to LED")
+    print("Connect GPIO pin 12 to transistor gate")
     answer = input("[Y/N] to confirm / quit")
     if answer == 'n':
         sys.exit()
