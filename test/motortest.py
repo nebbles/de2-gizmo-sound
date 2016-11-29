@@ -11,7 +11,7 @@ from __future__ import print_function
 
 def startup():
     startup_message = "motortest.py running..."
-    print startup_message
+    print "motortest.py running..."
     print "This program uses the MotorSystem and ControlSystem circuits."
     print "Connect GPIO pin 16 to microswitch"
     print "Connect GPIO pin 18 to LED"
