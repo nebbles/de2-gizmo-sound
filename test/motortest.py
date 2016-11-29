@@ -6,7 +6,7 @@ import RPi.GPIO as GPIO # External module imports GPIO
 import time # Library to slow or give a rest to the script
 import sys # Library to access program arguments
 import timeit
-from __future__ import print_function
+#from __future__ import print_function
 #print(os.path.getsize(file_name)/1024+'KB / '+size+' KB downloaded!', end='\r')
 
 try:
