@@ -26,10 +26,10 @@ try:
         GPIO.setup(23, GPIO.IN) # Microswitch pin 16 for feedback
         GPIO.setup(24, GPIO.OUT) # LED pin 18 for feedback
         GPIO.setup(18, GPIO.OUT) # Motor pin 12
-        motorpwm=GPIO.PWM(18,100)
+        motorpwm = GPIO.PWM(18,100)
         return motorpwm
 
-    startup()
+    #startup()
     motorpwm = setup()
     motorpwm.start(0)
     while(1):
