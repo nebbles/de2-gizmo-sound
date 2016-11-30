@@ -14,7 +14,7 @@
   <tr>
     <td rowspan="3">SS1-2</td>
     <td>GRND</td>
-    <td>9</td>
+    <td>14</td>
     <td>-</td>
     <td></td>
     <td>Common ground</td>
@@ -22,8 +22,8 @@
   </tr>
   <tr>
     <td>S1</td>
-    <td>7</td>
-    <td>4</td>
+    <td>13</td>
+    <td>27</td>
     <td></td>
     <td>I/O Output</td>
     <td>Gate pin of transistor sol-1</td>
