@@ -77,7 +77,7 @@
     <td>18</td>
     <td></td>
     <td>PWM Output</td>
-    <td><i>to motor driver...</i></td>
+    <td>Gate pin of transistor for motor</td>
   </tr>
   <tr>
     <td rowspan="2">CS1</td>
