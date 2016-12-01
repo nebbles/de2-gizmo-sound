@@ -42,6 +42,7 @@ try:
         else:  # button is pressed:
             if not flag:
                 print("Button pressed")
+                time.sleep(0.01)
                 flag = True
 
 finally:
