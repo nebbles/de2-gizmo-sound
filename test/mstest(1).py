@@ -30,6 +30,10 @@ motorpwm = GPIO.PWM(18,100)
 
 flag = True # Flag to prevent looping print statement
 
+motorpwm.start(0)
+cycle=input("How fast? (20-100)")
+motorpwm.ChangeDutyCycle(cycle)
+
 print("Press CTRL+C to exit")
 try:
     while 1:
