@@ -29,17 +29,21 @@ GPIO.setup(msPin, GPIO.IN, pull_up_down=GPIO.PUD_UP) # Microswitch pin 16 for fe
 motorpwm = GPIO.PWM(18,100)
 
 try:
-    motorpwm.start(0)
-    cycle=input("How fast? (20-100)")
-    motorpwm.ChangeDutyCycle(cycle)
+    flag = True # Flag to prevent looping print statement
 
-    while True:
-        if not GPIO.input(msPin): # if ms pressed down
-            print "triggered"
-            while True:
-                if GPIO.input(msPin): # if ms is released
-                    print "released"
-                    break
+    print("Press button to activate solenoid. Press CTRL+C to exit")
+    try:
+        while 1:
+            # The input() function will return either a True or False
+            # indicating whether the pin is HIGH or LOW.
+            if GPIO.input(msPin):  # button is released
+                if flag:
+                    print("Button released")
+                    flag = False
+            else:  # button is pressed:
+                if not flag:
+                    print("Button pressed")
+                    flag = True
 
 finally:
     motorpwm.stop()
