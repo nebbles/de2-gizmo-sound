@@ -47,7 +47,7 @@ try:
                 time.sleep(0.01)
                 flag = True
 
-finally:
+except KeyboardInterrupt:
     motorpwm.ChangeDutyCycle(0)
     motorpwm.stop()
     GPIO.cleanup()
