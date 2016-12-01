@@ -25,7 +25,8 @@ from datetime import datetime
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(24, GPIO.OUT) # LED pin 18 for feedback
 GPIO.setup(18, GPIO.OUT) # Motor pin 12
-msPin = GPIO.setup(23, GPIO.IN, pull_up_down=GPIO.PUD_UP) # Microswitch pin 16 for feedback
+msPin = 17
+GPIO.setup(msPin, GPIO.IN, pull_up_down=GPIO.PUD_UP) # Microswitch pin 16 for feedback
 motorpwm = GPIO.PWM(18,100)
 
 
@@ -46,7 +47,6 @@ try:
 
     while True:
         if not GPIO.input(msPin): # if ms pressed down
-            print "triggered"
             rpm = calcrpm()
             print "RPM: ",rpm
             while True:
