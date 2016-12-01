@@ -38,6 +38,7 @@ try:
             print "triggered"
             while True:
                 if GPIO.input(msPin): # if ms is released
+                    print "released"
                     break
 
 finally:
