@@ -48,6 +48,6 @@ try:
                 flag = True
 
 except KeyboardInterrupt:
-    motorpwm.ChangeDutyCycle(0)
-    # motorpwm.stop()
+    # motorpwm.ChangeDutyCycle(0)
+    motorpwm.stop()
     # GPIO.cleanup()
