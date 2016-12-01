@@ -48,5 +48,6 @@ try:
                 flag = True
 
 finally:
+    motorpwm.ChangeDutyCycle(0)
     motorpwm.stop()
     GPIO.cleanup()
