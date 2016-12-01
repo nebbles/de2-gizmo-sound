@@ -47,6 +47,6 @@ try:
                 time.sleep(0.01)
                 flag = True
 
-except:
+finally:
     motorpwm.stop()
     GPIO.cleanup()
