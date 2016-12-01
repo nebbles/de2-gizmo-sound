@@ -28,14 +28,12 @@ msPin = 17
 GPIO.setup(msPin, GPIO.IN, pull_up_down=GPIO.PUD_UP) # Microswitch pin 16 for feedback
 motorpwm = GPIO.PWM(18,100)
 
-flag = True # Flag to prevent looping print statement
-
-motorpwm.start(0)
-cycle=input("How fast? (20-100)")
-motorpwm.ChangeDutyCycle(cycle)
-
 print("Press CTRL+C to exit")
 try:
+    flag = True # Flag to prevent looping print statement
+    motorpwm.start(0)
+    cycle=input("How fast? (20-100)")
+    motorpwm.ChangeDutyCycle(cycle)
     while 1:
         # The input() function will return either a True or False
         # indicating whether the pin is HIGH or LOW.
