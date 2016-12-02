@@ -12,7 +12,7 @@ import timeit
 
 GPIO.setmode(GPIO.BCM)
 msPin = 17
-GPIO.setup(msPin, GPIO.IN, pull_up_down=GPIO.PUD_UP) # Microswitch pin 16 for feedback
+GPIO.setup(msPin, GPIO.IN) # Microswitch pin 16 for feedback
 
 print("Press CTRL+C to exit")
 try:
