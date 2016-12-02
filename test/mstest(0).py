@@ -29,6 +29,7 @@ try:
             if not flag:
                 counter += 1
                 print("Button pressed"), counter
+                time.sleep(0.01)
                 flag = True
 
 finally:
