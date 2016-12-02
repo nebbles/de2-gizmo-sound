@@ -13,6 +13,7 @@ import timeit
 GPIO.setmode(GPIO.BCM)
 msPin = 17
 GPIO.setup(msPin, GPIO.IN) # Microswitch pin 16 for feedback
+counter = 0
 
 print("Press CTRL+C to exit")
 try:
@@ -26,7 +27,8 @@ try:
                 flag = False
         else:  # button is pressed:
             if not flag:
-                print("Button pressed")
+                counter += 1
+                print("Button pressed"), counter
                 flag = True
 
 finally:
