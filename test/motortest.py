@@ -17,7 +17,7 @@ try:
         print("Connect GPIO pin 16 to microswitch")
         print("Connect GPIO pin 18 to LED")
         print("Connect GPIO pin 12 to transistor gate")
-        answer = input("[Y/N] to confirm / quit")
+        answer = str(raw_input("[Y/N] to confirm / quit"))
         if answer == 'n':
             sys.exit()
 
