@@ -54,7 +54,7 @@ flag = True # Flag to prevent looping print statement
 try:
     startup()
     print(colour.red+"\nPress button to activate solenoid. Press "+colour.bold+"CTRL+C"+colour.end+colour.red+" to exit."+colour.end)
-    while 1:
+    while True:
         # The input() function will return either a True or False
         # indicating whether the pin is HIGH or LOW.
         if GPIO.input(butPin):  # button is released
