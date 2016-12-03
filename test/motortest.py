@@ -30,7 +30,7 @@ try:
     startup()
     motorpwm.start(0)
     exit_words = ['exit', 'e', 'quit', 'q']
-    print("You can type any of the following to exit the program"), exit_words
+    print("\nYou can type any of the following to exit the program"), exit_words, "\n"
 
     while(1):
         cycle = raw_input("Set duty cycle (should be 20-100): ")
@@ -41,7 +41,7 @@ try:
                 cycle = int(cycle)
                 motorpwm.ChangeDutyCycle(cycle)
             except:
-                print("Unable to change duty cycle: Input was not an integer.")
+                print("Unable to change duty cycle: Input was not an integer or exit word.")
 
 finally:
     motorpwm.stop()
