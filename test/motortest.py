@@ -59,6 +59,8 @@ try:
             except ValueError:
                 print("Unable to change duty cycle: Input was not an integer (0 to 100 inclusive) or key word.\n")
 
-finally:
+except KeyboardInterrupt: # If CTRL+C is pressed, exit cleanly
+    print "\n"
+finally:  # In any other exit circumstance, exit cleanly.
     motorpwm.stop()
     GPIO.cleanup()
