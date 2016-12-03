@@ -36,6 +36,9 @@ try:
         cycle=input("How fast? (20-100)")
         motorpwm.ChangeDutyCycle(cycle)
 
-finally:
+except KeyboardInterrupt:
     motorpwm.stop()
+    GPIO.cleanup()
+
+finally:
     GPIO.cleanup()
