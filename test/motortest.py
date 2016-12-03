@@ -36,7 +36,6 @@ def startup():
         elif answer == 'y':
             break
 
-print colour.BOLD + 'Hello world' + colour.END
 try:
     motorpwm = setup()
     startup()
@@ -49,15 +48,16 @@ try:
         if any(cycle in s for s in exit_words):
             sys.exit()
         elif cycle == 'help':
-            print colour.BOLD+colour.GREEN"\nHELP: "+colour.END+colour.GREEN+"You can type any of the following to exit the program", exit_words
-            print "To set duty cycle, input an integer from 0 to 100 incluseive.\n", colour.END
+            print colour.BOLD+colour.GREEN+"\nHELP: "+colour.END+colour.GREEN+"You can type any of the following to exit the program:"
+            print exit_words
+            print "To set duty cycle, input an integer from 0 to 100 incluseive.\n"+colour.END
         else:
             try:
                 cycle = int(cycle)
                 if not (0 <= cycle <= 100): raise ValueError
                 motorpwm.ChangeDutyCycle(cycle)
             except ValueError:
-                print("Unable to change duty cycle: Input was not an integer (0 to 100 inclusive) or exit word.\n")
+                print("Unable to change duty cycle: Input was not an integer (0 to 100 inclusive) or key word.\n")
 
 finally:
     motorpwm.stop()
