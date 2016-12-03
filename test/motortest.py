@@ -29,11 +29,11 @@ def startup():
     print "This program uses the MotorSystem circuit."
     print "Connect "+colour.BOLD+"GPIO pin 12"+colour.END+" to transistor gate for motor."
     while True:
-        answer = raw_input("[Y/N] to confirm / quit: ")
+        answer = raw_input("[C/Q] to confirm / quit: ")
         answer = answer.lower()
-        if answer == 'n':
+        if answer == 'q':
             sys.exit()
-        elif answer == 'y':
+        elif answer == 'c':
             break
 
 try:
