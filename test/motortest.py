@@ -18,7 +18,8 @@ def startup():
     print("This program uses the MotorSystem circuit.")
     print("Connect GPIO pin 12 to transistor gate for motor")
     while True:
-        answer = str(raw_input("[Y/N] to confirm / quit"))
+        answer = raw_input("[Y/N] to confirm / quit: ")
+        answer = answer.lower()
         if answer == 'n':
             sys.exit()
         elif answer == 'y':
@@ -28,9 +29,16 @@ try:
     motorpwm = setup()
     startup()
     motorpwm.start(0)
+    exit_words = ['exit', 'e', 'quit', 'q']
+    print("You can type any of the following to exit the program"), exit_words
+
     while(1):
-        cycle=input("Set PWM (should be 20-100): ")
-        motorpwm.ChangeDutyCycle(cycle)
+        cycle = raw_input("Set PWM (should be 20-100): ")
+        if any(cycle in s for s in exit_words):
+            sys.exit()
+        else:
+            cycle = int(cycle)
+            motorpwm.ChangeDutyCycle(cycle)
 
 finally:
     motorpwm.stop()
