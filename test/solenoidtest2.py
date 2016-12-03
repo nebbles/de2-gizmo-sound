@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 '''
-solenoid.py is a test file for running the solenoid set up. Circuit diagram can be found in the same directory. Pins are set up as follows:
+solenoid2.py is a test file for testing the frequency speed possible from the solenoid. Circuit diagram can be found in repository. Pins are set up as follows:
 
 GPIO Pin    Purpose         Connected to
 1           3.3v power      Top pin (C) of transistor (see CBE transistor pins - European)
@@ -14,9 +14,31 @@ GPIO Pin    Purpose         Connected to
 import RPi.GPIO as GPIO # External module imports GPIO
 import time # Library to slow or give a rest to the script
 import timeit
+import sys
 
+class colour:
+   purple = '\033[95m'
+   cyan = '\033[96m'
+   darkcyan = '\033[36m'
+   blue = '\033[94m'
+   green = '\033[92m'
+   yellow = '\033[93m'
+   red = '\033[91m'
+   bold = '\033[1m'
+   underline = '\033[4m'
+   end = '\033[0m'
 
-
+def startup():
+    print "This program uses the tests the speed of solenoid activation."
+    print colour.darkcyan+colour.bold+"GPIO\tPurpose\t\tConnected to"+colour.end
+    print colour.darkcyan+"1\t3.3v power\tTop pin (C) of transistor (see CBE transistor pins - European)\n6\tGRND\t\tGrnd of breadboard\n11\tInput port\tButton press\n16\tOutput port\tMiddle pin of transitor (open circuit for LED/Solenoid activation)"
+    while True:
+        answer = raw_input(colour.bold+"\n[C/Q] to confirm / quit: "+colour.end)
+        answer = answer.lower()
+        if answer == 'q':
+            sys.exit()
+        elif answer == 'c':
+            break
 
 # Pin definiton using Broadcom scheme
 solenoidpin = 23  # LED/Solenoid -- Broadcom pin 23 (P1 pin 16)
@@ -29,8 +51,9 @@ GPIO.setup(butPin, GPIO.IN, pull_up_down=GPIO.PUD_UP) # Button pin set as input 
 
 flag = True # Flag to prevent looping print statement
 
-print("Press button to activate solenoid. Press CTRL+C to exit")
 try:
+    startup()
+    print(colour.red+"\nPress button to activate solenoid. Press "+colour.bold+"CTRL+C"+colour.end+colour.red+" to exit."+colour.end)
     while 1:
         # The input() function will return either a True or False
         # indicating whether the pin is HIGH or LOW.
@@ -64,5 +87,7 @@ try:
             elapsed_time = timeit.default_timer() - start_time
             print "elapsed time", elapsed_time
 
-except KeyboardInterrupt:  # If CTRL+C is pressed, exit cleanly:
-    GPIO.cleanup()  # cleanup all GPIO
+except KeyboardInterrupt: # If CTRL+C is pressed, exit cleanly
+    print "\n"
+finally:  # In any other exit circumstance, exit cleanly.
+    GPIO.cleanup()
