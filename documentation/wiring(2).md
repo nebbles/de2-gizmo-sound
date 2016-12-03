@@ -67,11 +67,11 @@
   <tr>
     <td rowspan="2">CS1</td>
     <td>MS1</td>
-    <td></td>
-    <td></td>
+    <td>15</td>
+    <td>22</td>
     <td></td>
     <td>I/O Input</td>
-    <td></td>
+    <td>Proto board input 5</td>
   </tr>
   <tr>
     <td>LED</td>
