@@ -29,7 +29,7 @@ try:
         motorpwm = GPIO.PWM(18,100)
         return motorpwm
 
-    #startup()
+    startup()
     motorpwm = setup()
     motorpwm.start(0)
     while(1):
