@@ -43,6 +43,17 @@ class colour:
    underline = '\033[4m'
    end = '\033[0m'
 
+def calcrpm():
+    global previoustime
+    currenttime = datetime.now()
+    x = currenttime - previoustime
+    x = float(x.total_seconds())
+    rpm = 60 / (4*x)
+    previoustime = currenttime
+    return rpm
+
+counter = 0
+rpm = 0
 try:
     print(colour.red+"mstest1")
     print("This program combines the use of the motor and microswitch.")
