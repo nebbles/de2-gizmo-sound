@@ -60,7 +60,7 @@ try:
                 print("Unable to change duty cycle: Input was not an integer (0 to 100 inclusive) or key word.\n")
 
 except KeyboardInterrupt: # If CTRL+C is pressed, exit cleanly
-    motor1pwm.stop()
+    motorpwm.stop()
     print "\n"
 finally:  # In any other exit circumstance, exit cleanly.
     GPIO.cleanup()
