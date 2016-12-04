@@ -66,7 +66,7 @@
   </tr>
   <tr>
     <td rowspan="3">CS1</td>
-    <td>MS1-A</td>
+    <td>MS1-NO</td>
     <td>13</td>
     <td>27</td>
     <td></td>
@@ -74,7 +74,7 @@
     <td>Proto board input (9)</td>
   </tr>
   <tr>
-    <td>MS1-B</td>
+    <td>MS1-NC</td>
     <td>15</td>
     <td>22</td>
     <td></td>
