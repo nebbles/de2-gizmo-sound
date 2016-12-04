@@ -13,11 +13,12 @@ import sys
 # Pin definiton using Broadcom scheme
 solenoid1 = 23  # GPIO 16
 solenoid2 = 24  # GPIO 18
-solenoid3 = 17  # GPIO 11
-solenoid4 = 27  # GPIO 13
+solenoid3 = 4   # GPIO 07
+solenoid4 = 17  # GPIO 11
 motor1 = 18     # GPIO 12
-led1 = 4        # GPIO 07
-switch1 = 22    # GPIO 15
+led1 = 25       # GPIO 22
+switch1 = 27    # GPIO 13
+switch2 = 22    # GPIO 15
 
 # Pin setup
 GPIO.setmode(GPIO.BCM)  # Broadcom pin-numbering scheme
