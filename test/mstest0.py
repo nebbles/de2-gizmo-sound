@@ -6,30 +6,53 @@ import RPi.GPIO as GPIO # External module imports GPIO
 import time # Library to slow or give a rest to the script
 import sys # Library to access program arguments
 import timeit
-#from __future__ import print_function
-#print(os.path.getsize(file_name)/1024+'KB / '+size+' KB downloaded!', end='\r')
-
+from datetime import datetime
 
 GPIO.setmode(GPIO.BCM)
-msPin = 17
-GPIO.setup(msPin, GPIO.IN) # Microswitch pin 16 for feedback
-counter = 0
+switch1 = 27    # GPIO 13
+switch2 = 22    # GPIO 15
+GPIO.setup(switch1, GPIO.IN)
+GPIO.setup(switch2, GPIO.IN)
+previoustime = datetime.now()
 
-print("Press CTRL+C to exit")
+class colour:
+   purple = '\033[95m'
+   cyan = '\033[96m'
+   darkcyan = '\033[36m'
+   blue = '\033[94m'
+   green = '\033[92m'
+   yellow = '\033[93m'
+   red = '\033[91m'
+   bold = '\033[1m'
+   underline = '\033[4m'
+   end = '\033[0m'
+
+def calcrpm():
+    global previoustime
+    currenttime = datetime.now()
+    x = currenttime - previoustime
+    x = float(x.total_seconds())
+    rpm = 60 / (4*x)
+    previoustime = currenttime
+    return rpm
+
+counter = 0
+rpm = 0
+print(colour.red+"Press "+colour.bold+"CTRL+C"+colour.end+colour.red+" to exit"colour.end)
 try:
     flag = True # Flag to prevent looping print statement
-    while 1:
-        # The input() function will return either a True or False
-        # indicating whether the pin is HIGH or LOW.
-        if GPIO.input(msPin):  # button is released
+    while True:
+        if GPIO.input(switch1) and not GPIO.input(switch2):  # button is released
             if flag:
-                print("Button released")
+                print("\nButton released")
                 flag = False
-        else:  # button is pressed:
+        elif not GPIO.input(switch1) and GPIO.input(switch2):  # button is pressed:
             if not flag:
                 counter += 1
-                print("Button pressed"), counter
-                time.sleep(0.01)
+                print("\nButton pressed"), counter
+                print("Counter: "+colour.yellow+counter+colour.end)
+                rpm = calcrpm()
+                print "RPM: "+colour.green+rpm+colour.end
                 flag = True
 
 finally:
