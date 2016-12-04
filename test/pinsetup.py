@@ -1,5 +1,6 @@
-# Standardised pin set up
+#!/usr/bin/env python
 
+# Standardised set up
 import RPi.GPIO as GPIO # External module imports GPIO
 import time # Library to slow or give a rest to the script
 import timeit # Alternative timing library for platform specific timing
