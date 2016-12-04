@@ -2,8 +2,11 @@
 
 import RPi.GPIO as GPIO # External module imports GPIO
 import time # Library to slow or give a rest to the script
-import timeit
-import sys
+import timeit # Alternative timing library for platform specific timing
+import sys # Library to access program arguments and call exits
+import os # Library provides functionality to clear screen
+from datetime import datetime
+import random
 
 # Pin definiton using Broadcom scheme
 solenoid1 = 23  # GPIO 16
