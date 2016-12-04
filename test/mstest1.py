@@ -76,11 +76,19 @@ try:
         except:
             print(colour.yellow+"Input must be integer 0-100 inclusive.\n"+colour.end)
     motor1pwm.ChangeDutyCycle(cycle)
+
+    flag = True # Flag to prevent looping print statement
     while True:
-        if not GPIO.input(switch1) and GPIO.input(switch2):  # button is pressed:
+        if GPIO.input(switch1) and not GPIO.input(switch2):  # button is released
+            if flag:
+                # print("\nButton released")
+                flag = False
+        elif not GPIO.input(switch1) and GPIO.input(switch2):  # button is pressed:
+            if not flag:
                 counter += 1
                 rpm = calcrpm()
                 print("\nCounter: "+colour.yellow+str(counter)+colour.end+" RPM: "+colour.green+str(rpm)+colour.end)
+                flag = True
 
 except KeyboardInterrupt: # If CTRL+C is pressed, exit cleanly
     motor1pwm.stop()
