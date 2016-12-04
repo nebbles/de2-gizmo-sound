@@ -28,8 +28,8 @@ GPIO.setup(solenoid4, GPIO.OUT)  # set as I/O output
 GPIO.setup(led1, GPIO.OUT)  # set as I/O output
 GPIO.setup(motor1, GPIO.OUT) # set as I/O output
 motor1pwm = GPIO.PWM(motor1,100) # set pwm on motor1 pin
-GPIO.setup(switch1, GPIO.IN)
-GPIO.setup(switch2, GPIO.IN)
+GPIO.setup(switch1, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(switch2, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 class colour:
    purple = '\033[95m'
@@ -93,6 +93,6 @@ try:
 except KeyboardInterrupt: # If CTRL+C is pressed, exit cleanly
     print "\n"
 finally:  # In any other exit circumstance, exit cleanly.
-    motorpwm.stop()
+    motor1pwm.stop()
     time.sleep(0.1)
     GPIO.cleanup()
