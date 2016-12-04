@@ -11,8 +11,8 @@ from datetime import datetime
 GPIO.setmode(GPIO.BCM)
 switch1 = 27    # GPIO 13
 switch2 = 22    # GPIO 15
-GPIO.setup(switch1, GPIO.IN)
-GPIO.setup(switch2, GPIO.IN)
+GPIO.setup(switch1, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(switch2, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 previoustime = datetime.now()
 
 class colour:
@@ -50,10 +50,12 @@ try:
             if not flag:
                 counter += 1
                 print("\nButton pressed"), counter
-                print("Counter: "+colour.yellow+counter+colour.end)
+                print("Counter: "+colour.yellow+str(counter)+colour.end)
                 rpm = calcrpm()
-                print "RPM: "+colour.green+rpm+colour.end
+                print "RPM: "+colour.green+str(rpm)+colour.end
                 flag = True
 
+except KeyboardInterrupt:
+    print "\n"
 finally:
     GPIO.cleanup()
