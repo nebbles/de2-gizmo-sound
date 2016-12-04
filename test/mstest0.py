@@ -49,7 +49,7 @@ try:
         elif not GPIO.input(switch1) and GPIO.input(switch2):  # button is pressed:
             if not flag:
                 counter += 1
-                print("\nButton pressed"), counter
+                print("\nButton pressed")
                 print("Counter: "+colour.yellow+str(counter)+colour.end)
                 rpm = calcrpm()
                 print "RPM: "+colour.green+str(rpm)+colour.end
