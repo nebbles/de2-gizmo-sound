@@ -63,4 +63,5 @@ except KeyboardInterrupt: # If CTRL+C is pressed, exit cleanly
     motorpwm.stop()
     print "\n"
 finally:  # In any other exit circumstance, exit cleanly.
+    motorpwm.stop()
     GPIO.cleanup()
