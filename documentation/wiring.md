@@ -41,16 +41,16 @@
   </tr>
   <tr>
     <td>S3</td>
-    <td>11</td>
-    <td>17</td>
+    <td>7</td>
+    <td>4</td>
     <td></td>
     <td>I/O Output</td>
     <td>Proto board input 7</td>
   </tr>
   <tr>
     <td>S4</td>
-    <td>13</td>
-    <td>27</td>
+    <td>11</td>
+    <td>17</td>
     <td></td>
     <td>I/O Output</td>
     <td>Proto board input 8</td>
@@ -65,18 +65,26 @@
     <td>Proto board input 2</td>
   </tr>
   <tr>
-    <td rowspan="2">CS1</td>
-    <td>MS1</td>
+    <td rowspan="3">CS1</td>
+    <td>MS1-A</td>
+    <td>13</td>
+    <td>27</td>
+    <td></td>
+    <td>I/O Input</td>
+    <td>Proto board input (9)</td>
+  </tr>
+  <tr>
+    <td>MS1-B</td>
     <td>15</td>
     <td>22</td>
     <td></td>
     <td>I/O Input</td>
-    <td>Proto board input 5</td>
+    <td>Proto board input (10)</td>
   </tr>
   <tr>
     <td>LED</td>
-    <td>7</td>
-    <td>4</td>
+    <td>22</td>
+    <td>25</td>
     <td></td>
     <td>I/O Output</td>
     <td>Proto board input 3</td>
