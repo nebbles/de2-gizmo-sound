@@ -91,7 +91,8 @@ try:
                 flag = True
 
 except KeyboardInterrupt: # If CTRL+C is pressed, exit cleanly
-    motor1pwm.stop()
     print "\n"
 finally:  # In any other exit circumstance, exit cleanly.
+    motorpwm.stop()
+    time.sleep(0.1)
     GPIO.cleanup()
