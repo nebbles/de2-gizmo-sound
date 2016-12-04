@@ -38,7 +38,7 @@ def calcrpm():
 
 counter = 0
 rpm = 0
-print(colour.red+"Press "+colour.bold+"CTRL+C"+colour.end+colour.red+" to exit"colour.end)
+print(colour.red+"Press "+colour.bold+"CTRL+C"+colour.end+colour.red+" to exit"+colour.end)
 try:
     flag = True # Flag to prevent looping print statement
     while True:
