@@ -1,53 +1,78 @@
 #!/usr/bin/env python
 
-# motor test program
-
+# Standardised set up
 import RPi.GPIO as GPIO # External module imports GPIO
 import time # Library to slow or give a rest to the script
-import sys # Library to access program arguments
-import timeit
-#from __future__ import print_function
-#print(os.path.getsize(file_name)/1024+'KB / '+size+' KB downloaded!', end='\r')
+import timeit # Alternative timing library for platform specific timing
+import sys # Library to access program arguments and call exits
+import os # Library provides functionality to clear screen
+from datetime import datetime
+import random
 
+# Pin definiton using Broadcom scheme
+solenoid1 = 23  # GPIO 16
+solenoid2 = 24  # GPIO 18
+solenoid3 = 4   # GPIO 07
+solenoid4 = 17  # GPIO 11
+motor1 = 18     # GPIO 12
+led1 = 25       # GPIO 22
+switch1 = 27    # GPIO 13
+switch2 = 22    # GPIO 15
 
-# startup_message = "motortest.py running..."
-# print("motortest.py running...")
-# print("This program uses the MotorSystem and ControlSystem circuits.")
-# print("Connect GPIO pin 16 to microswitch")
-# print("Connect GPIO pin 18 to LED")
-# print("Connect GPIO pin 12 to transistor gate")
-# answer = input("[Y/N] to confirm / quit")
-# if answer == 'n':
-#     sys.exit()
+# Pin setup
+GPIO.setmode(GPIO.BCM)  # Broadcom pin-numbering scheme
+GPIO.setup(solenoid1, GPIO.OUT)  # set as I/O output
+GPIO.setup(solenoid2, GPIO.OUT)  # set as I/O output
+GPIO.setup(solenoid3, GPIO.OUT)  # set as I/O output
+GPIO.setup(solenoid4, GPIO.OUT)  # set as I/O output
+GPIO.setup(led1, GPIO.OUT)  # set as I/O output
+GPIO.setup(motor1, GPIO.OUT) # set as I/O output
+motor1pwm = GPIO.PWM(motor1,100) # set pwm on motor1 pin
+GPIO.setup(switch1, GPIO.IN)
+GPIO.setup(switch2, GPIO.IN)
 
+class colour:
+   purple = '\033[95m'
+   cyan = '\033[96m'
+   darkcyan = '\033[36m'
+   blue = '\033[94m'
+   green = '\033[92m'
+   yellow = '\033[93m'
+   red = '\033[91m'
+   bold = '\033[1m'
+   underline = '\033[4m'
+   end = '\033[0m'
 
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(24, GPIO.OUT) # LED pin 18 for feedback
-GPIO.setup(18, GPIO.OUT) # Motor pin 12
-msPin = 17
-GPIO.setup(msPin, GPIO.IN, pull_up_down=GPIO.PUD_UP) # Microswitch pin 16 for feedback
-motorpwm = GPIO.PWM(18,100)
-
-print("Press CTRL+C to exit")
 try:
-    flag = True # Flag to prevent looping print statement
-    motorpwm.start(0)
-    cycle=input("How fast? (20-100)")
-    motorpwm.ChangeDutyCycle(cycle)
-    while 1:
-        # The input() function will return either a True or False
-        # indicating whether the pin is HIGH or LOW.
-        if GPIO.input(msPin):  # button is released
-            if flag:
-                print("Button released")
-                flag = False
-        else:  # button is pressed:
-            if not flag:
-                print("Button pressed")
-                time.sleep(0.01)
-                flag = True
+    print(colour.red+"mstest1")
+    print("This program combines the use of the motor and microswitch.")
+    print("Use standardised pin layout."+colour.end)
+    while True:
+        answer = raw_input(colour.red+"\n[C/Q] to confirm / quit: "+colour.end)
+        answer.lower()
+        if answer == 'q':
+            sys.exit()
+        elif answer == 'c':
+            break
 
-except KeyboardInterrupt:
-    # motorpwm.ChangeDutyCycle(0)
-    motorpwm.stop()
+    print(colour.red+"Press "+colour.bold+"CTRL+C"+colour.end+colour.red+" to exit"+colour.end)
+    motor1pwm.start(0)
+    while True:
+        cycle = raw_input(colour.green+"Set duty cycle (should be 20-100): "+colour.end)
+        try:
+            cycle = int(cycle)
+            if 0 <= cycle <= 100: break
+        except:
+            print(colour.yellow+"Input must be integer 0-100 inclusive.\n"+colour.end)
+    motor1pwm.ChangeDutyCycle(cycle)
+    while True:
+        if not GPIO.input(switch1) and GPIO.input(switch2):  # button is pressed:
+                counter += 1
+                rpm = calcrpm()
+                print("\nCounter: "+colour.yellow+str(counter)+colour.end+" RPM: "+colour.green+str(rpm)+colour.end)
+
+except KeyboardInterrupt: # If CTRL+C is pressed, exit cleanly
+    motor1pwm.stop()
+    print "\n"
+finally:  # In any other exit circumstance, exit cleanly.
     GPIO.cleanup()
