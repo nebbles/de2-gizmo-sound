@@ -1,6 +1,10 @@
 import time
 import random
 import sys
+import os
+
+print("show this for 3 seconds then clear screen")
+os.system('clear')
 
 offset = random.randint(0,1)
 
