@@ -32,7 +32,7 @@ def calcrpm():
     currenttime = datetime.now()
     x = currenttime - previoustime
     x = float(x.total_seconds())
-    rpm = 60 / (4*x)
+    rpm = 60 / (2*x)
     previoustime = currenttime
     return rpm
 
