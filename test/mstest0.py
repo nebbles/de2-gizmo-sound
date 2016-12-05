@@ -9,8 +9,8 @@ import timeit
 from datetime import datetime
 
 GPIO.setmode(GPIO.BCM)
-switch1 = 27    # GPIO 13
-switch2 = 22    # GPIO 15
+switch1 = 6    # GPIO 31
+switch2 = 13    # GPIO 33
 GPIO.setup(switch1, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(switch2, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 previoustime = datetime.now()
