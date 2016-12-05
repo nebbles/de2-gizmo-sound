@@ -55,6 +55,7 @@ def calcrpm():
 previoustime = datetime.now()
 counter = 0
 rpm = 0
+rpms = []
 try:
     print(colour.red+"mstest1")
     print("This program combines the use of the motor and microswitch.")
@@ -92,10 +93,13 @@ try:
                     print("\nButton pressed")
                     print("Counter: "+colour.yellow+str(counter)+colour.end)
                     rpm = calcrpm()
+                    rpms.append(rpm)
                     print "RPM: "+colour.green+str(rpm)+colour.end
                     flag = True
 
 except KeyboardInterrupt: # If CTRL+C is pressed, exit cleanly
+    avg = sum(rpms)/len(rpms)
+    print "For PWM:",cycle,"average RPM is:",avg
     print "\n"
 finally:  # In any other exit circumstance, exit cleanly.
     motor1pwm.stop()
