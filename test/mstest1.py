@@ -93,7 +93,8 @@ try:
                     print("\nButton pressed")
                     print("Counter: "+colour.yellow+str(counter)+colour.end)
                     rpm = calcrpm()
-                    rpms.append(rpm)
+                    if 0<=rpm<=150:
+                        rpms.append(rpm)
                     print "RPM: "+colour.green+str(rpm)+colour.end
                     flag = True
 
