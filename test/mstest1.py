@@ -16,8 +16,8 @@ solenoid3 = 4   # GPIO 07
 solenoid4 = 17  # GPIO 11
 motor1 = 18     # GPIO 12
 led1 = 25       # GPIO 22
-switch1 = 27    # GPIO 13
-switch2 = 22    # GPIO 15
+switch1 = 6    # GPIO 31
+switch2 = 13    # GPIO 33
 
 # Pin setup
 GPIO.setmode(GPIO.BCM)  # Broadcom pin-numbering scheme
@@ -68,27 +68,32 @@ try:
 
     print(colour.red+"Press "+colour.bold+"CTRL+C"+colour.end+colour.red+" to exit"+colour.end)
     motor1pwm.start(0)
-    while True:
-        cycle = raw_input(colour.green+"Set duty cycle (should be 20-100): "+colour.end)
-        try:
-            cycle = int(cycle)
-            if 0 <= cycle <= 100: break
-        except:
-            print(colour.yellow+"Input must be integer 0-100 inclusive.\n"+colour.end)
-    motor1pwm.ChangeDutyCycle(cycle)
 
-    flag = True # Flag to prevent looping print statement
     while True:
-        if GPIO.input(switch1) and not GPIO.input(switch2):  # button is released
-            if flag:
-                # print("\nButton released")
-                flag = False
-        elif not GPIO.input(switch1) and GPIO.input(switch2):  # button is pressed:
-            if not flag:
-                counter += 1
-                rpm = calcrpm()
-                print("\nCounter: "+colour.yellow+str(counter)+colour.end+" RPM: "+colour.green+str(rpm)+colour.end)
-                flag = True
+        try:
+            while True:
+                cycle = raw_input(colour.green+"Set duty cycle (should be 20-100): "+colour.end)
+                try:
+                    cycle = int(cycle)
+                    if 0 <= cycle <= 100: break
+                except:
+                    print(colour.yellow+"Input must be integer 0-100 inclusive.\n"+colour.end)
+            motor1pwm.ChangeDutyCycle(cycle)
+
+            flag = True # Flag to prevent looping print statement
+            while True:
+                if GPIO.input(switch1) and not GPIO.input(switch2):  # button is released
+                    if flag:
+                        # print("\nButton released")
+                        flag = False
+                elif not GPIO.input(switch1) and GPIO.input(switch2):  # button is pressed:
+                    if not flag:
+                        counter += 1
+                        rpm = calcrpm()
+                        print("\nCounter: "+colour.yellow+str(counter)+colour.end+" RPM: "+colour.green+str(rpm)+colour.end)
+                        flag = True
+        except KeyboardInterrupt:
+            pass
 
 except KeyboardInterrupt: # If CTRL+C is pressed, exit cleanly
     print "\n"
