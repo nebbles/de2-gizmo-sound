@@ -1,34 +1,65 @@
 #!/usr/bin/env python
 
 '''
-testrig.py is a test file for running the parsing script. It allows for testing and degbugging of the tune that is being passed to the final program by translating its commands into discrete LED blinks or sound snippets. Circuit diagram can be found in the documentation. Pins are set up as follows:
+gizmo.py is a release file for controlling the gizmo. Currently built for debigging the hardware, it will be expanded with use of both a 'giz-solenoid.py' and 'giz-motor.py'.
 
-GPIO Pin    Purpose         Connected to
-6           GRND            Grnd of breadboard
-11          Output          LED 1
-13          Output          LED 2
-15          Output          LED 3
+When fully integrated it will use threads to run both components of the Gizmo (motor and solenoid) in unison. Circuit diagram can be found in the documentation. Pin layout and wiring included in documentation.
 
 Program currently supports 2 arguments.
 - Pass 'loop' to program if you want to loop the file.
-- Pass '<filename>' to program if a file other than 'example.py' needs to be used.
+- Pass '<filename>' to program if a file other than 'tune.txt' needs to be used.
 
 '''
 
+## ----- Import libs ----- ##
 import RPi.GPIO as GPIO # External module imports GPIO
 import time # Library to slow or give a rest to the script
-import sys # Library to access program arguments
-import timeit
+import timeit # Alternative timing library for platform specific timing
+import sys # Library to access program arguments and call exits
+import os # Library provides functionality to clear screen
+import random
+import datetime
+import collections
+import threading
+from Queue import Queue
 
-start_time = timeit.default_timer()
-elapsed = timeit.default_timer() - start_time
+## ----- Pin definiton using Broadcom scheme ----- ##
+solenoid1 = 23  # GPIO 16
+solenoid2 = 24  # GPIO 18
+solenoid3 = 4   # GPIO 07
+solenoid4 = 17  # GPIO 11
+motor1 = 18     # GPIO 12
+led1 = 25       # GPIO 22
+switch1 = 6    # GPIO 31
+switch2 = 13    # GPIO 33
 
+## ----- Pin setup ----- ##
+GPIO.setmode(GPIO.BCM)  # Broadcom pin-numbering scheme
+GPIO.setup(solenoid1, GPIO.OUT)  # set as I/O output
+GPIO.setup(solenoid2, GPIO.OUT)  # set as I/O output
+GPIO.setup(solenoid3, GPIO.OUT)  # set as I/O output
+GPIO.setup(solenoid4, GPIO.OUT)  # set as I/O output
+GPIO.setup(led1, GPIO.OUT)  # set as I/O output
+GPIO.setup(motor1, GPIO.OUT) # set as I/O output
+motor1pwm = GPIO.PWM(motor1,100) # set pwm on motor1 pin
+GPIO.setup(switch1, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(switch2, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+
+## ----- Set initial values ----- ##
 shouldLoop = True # loop needs to be iniated at least one time
 stopLoop = True # default behaviour is to stop loop after first iteration
 args = sys.argv[1:]
-timeinterval = 0.5
-inputfile = "example.txt"
+inputfile = "tune.txt"
+file_is_finished = False
+line_number = 0
+shouldExitThread = False
 
+previoustime = datetime.now()
+count_trigger = 0
+default_pwm = 55
+rpm = 0
+
+## ----- Start up parsing ----- ##
 if len(args) > 2:
     print "Program can only accept 2 arguments:"
     print "1: 'loop'"
@@ -51,60 +82,220 @@ infile = open(inputfile, "r") # Open data file -- "r" is for read
 tune = [line.rstrip('\n') for line in infile]
 infile.close() # Close the filehandle
 
-# Pin definiton using Broadcom scheme
-led1 = 17  # Broadcom pin 17 (P1 pin 11)
-led2 = 27  # Broadcom pin 27 (P1 pin 13)
-led3 = 22  # Broadcom pin 22 (P1 pin 15)
+## ----- Classes and functions ----- ##
 
-# Pin Setup:
-GPIO.setmode(GPIO.BCM)  # Broadcom pin-numbering scheme
-GPIO.setup(led1, GPIO.OUT)  # LED pin set as output
-GPIO.setup(led2, GPIO.OUT)  # LED pin set as output
-GPIO.setup(led3, GPIO.OUT)  # LED pin set as output
+class colour:
+   purple = '\033[95m'
+   cyan = '\033[96m'
+   darkcyan = '\033[36m'
+   blue = '\033[94m'
+   green = '\033[92m'
+   yellow = '\033[93m'
+   red = '\033[91m'
+   bold = '\033[1m'
+   underline = '\033[4m'
+   end = '\033[0m'
 
-# Start up feedback
-print("LED Test Rig. Press CTRL+C to exit")
+class History:
+    def __init__(self, capacity=3):
+        self.history = collections.deque([]) # Deque
+        self.capacity = capacity
+
+    def add(self, stamp):
+        if len(self.history) == self.capacity: # check if list has 3 items
+            self.history.popleft() # remove oldest
+        self.history.append(stamp) # add stamp to list
+
+    def clear(self):
+        self.history.clear() # empty history deque
+
+    def dump(self):
+        print "capacity:", self.capacity
+        print "number stored:", len(self.history)
+        print "history:", list(self.history) # print history
+
+    def average_rpm(self):
+        avg_rpm = sum(self.history)/len(self.history)
+        return avg_rpm
+
+    def averageTimeDelta(self):
+        datetimes = self.history
+        if len(self.history) == 1: # if a average cannot be made return 0
+            return datetime.timedelta(0)
+        else:
+            timedeltas = [datetimes[i]-datetimes[i-1] for i in range(1, len(datetimes))] # subtracting datetimes gives timedeltas
+            average_timedelta = sum(timedeltas, datetime.timedelta(0)) / len(timedeltas) # giving datetime.timedelta(0) as the start value makes sum work on tds
+            # print "avg_td",average_timedelta
+            return average_timedelta
+
+    def getprediction(self, fromtime):
+        average_timedelta = self.averageTimeDelta() # get average delta
+        prediction = fromtime + average_timedelta # add average delta to current time
+        return prediction # return prediction as datetime
+
+def calcrpm():
+    global previoustime
+    currenttime = datetime.now()
+    x = currenttime - previoustime
+    x = float(x.total_seconds())
+    rpm = 60 / (2*x)
+    previoustime = currenttime
+    return rpm
+
+def calcpwm(rpm, pwm, target=75):
+    delta_rpm = abs(rpm-target) # find difference in rpm
+    if rpm > target: # if rpm is greater than target then reduce
+        new_pwm = pwm - delta_rpm/2 # change the pwm by the difference over two to tend towards perfect value
+        return new_pwm # reduce pwm
+    elif rpm < target: # elif rpm is less than target then increase
+        new_pwm = pwm + delta_rpm/2
+        return new_pwm # increase pwm
+    else:
+        return pwm
+
+def solenoid(queue):
+    while True:
+        pass
+        if shouldExitThread: return
+        while not queue.qsize() == 0: # check if Q has item
+            timestamp = queue.get() # dequeue item
+            timenow = datetime.datetime.now() # get current time
+
+            if tune[line_number][0] == '1': # check if next line begins with zero
+                pass # if it does then do the usual
+                delay_dt = timestamp - timenow # get current time and subtract from prediction
+                delay = delay_dt.total_seconds() # convert delay into number of seconds
+                if delay >= 0:
+                    time.sleep(float(delay)) # sleep for delay
+                    print datetime.datetime.now(), "- Play solenoids!"# print an execution statement with timestamp
+
+                    hit1, hit2, hit3, hit4 = False, False, False, False # set hits all to false
+                    notes = tune[line_number]
+
+                    print line_number, notes
+
+                    if notes[1] == '1': hit1 = True
+                    if notes[2] == '1': hit2 = True
+                    if notes[3] == '1': hit3 = True
+                    if notes[4] == '1': hit4 = True
+
+                    if hit1: GPIO.output(solenoid1, GPIO.HIGH)
+                    if hit2: GPIO.output(solenoid2, GPIO.HIGH)
+                    if hit3: GPIO.output(solenoid3, GPIO.HIGH)
+                    if hit4: GPIO.output(solenoid4, GPIO.HIGH)
+
+                    line_number += 1
+
+            elif tune[line_number][0] == '0': # check if next line begins with zero
+                while tune[line_number][0] != '1':
+                    i = line_number # set the i to the line number
+                    while tune[i][0] != '1':
+                        i += 1
+                    number_of_lines = i - line_number + 1
+
+                    delay_dt = timestamp - timenow # get current time and subtract from prediction
+                    delay = delay_dt.total_seconds() # convert delay into number of seconds
+                    delay_fractional = float(delay / number_of_lines)
+
+                    time.sleep(delay_fractional)
+
+                    hit1, hit2, hit3, hit4 = False, False, False, False # set hits all to false
+                    notes = tune[line_number]
+
+                    print line_number, notes
+
+                    if notes[1] == '1': hit1 = True
+                    if notes[2] == '1': hit2 = True
+                    if notes[3] == '1': hit3 = True
+                    if notes[4] == '1': hit4 = True
+
+                    if hit1: GPIO.output(solenoid1, GPIO.HIGH)
+                    if hit2: GPIO.output(solenoid2, GPIO.HIGH)
+                    if hit3: GPIO.output(solenoid3, GPIO.HIGH)
+                    if hit4: GPIO.output(solenoid4, GPIO.HIGH)
+
+                    line_number += 1
+
+            else:
+                print "Parsing error!"
+
+## ----- Begin program ----- ##
+print "DE2 Gizmo Group Project"
+print "Press CTRL+C to exit at any time.\n"
 if not stopLoop:
-    loopstatement = "Program will loop."
+    loopstatement = "Tune loop: enabled"
 else:
-    loopstatement = "Program will not loop and will exit upon completion."
-print(loopstatement)
-filestatement = "Tune being read from: " + inputfile
+    loopstatement = "Tune loop: disabled (will prompt on completion)"
+print loopstatement
+print "Tune being read from: " + inputfile
 
+solenoidQueue = Queue() # create a Queue
+solenoidThread = threading.Thread(target=solenoid,args=[solenoidQueue]) # create thread
+solenoidThread.setDaemon = True # make thread a daemon thread
+solenoidThread.start() # start the thread (it will do nothing until item in queue)
+stampHistory = History(capacity=3)
+rpmHistory = History(capacity=4)
 
 try:
     while shouldLoop:
-        for index in range(0,len(tune)):
-            start_time = timeit.default_timer()
+        motor1pwm.ChangeDutyCycle(default_pwm) # set pwm at default_pwm
+        current_pwm = default_pwm
 
-            hit1, hit2, hit3 = False, False, False
-            notes = tune[index]
-            print start_time, index, notes
+        for i in xrange(0, 10): # for first 10 trigger counts
+            while True:
+                while ( GPIO.input(switch1) and not GPIO.input(switch2) ):  # button is released
+                    pass
+                if not GPIO.input(switch1) and GPIO.input(switch2): # button is pressed
+                    rpm = calcrpm() # get rpm
+                    if 0<=rpm<=150: rpmHistory.add(rpm)
+                    average_rpm = rpmHistory.average_rpm()
+                    current_pwm = calcpwm(rpm=average_rpm, pwm=current_pwm, target=75) # get new pwm
+                    motor1pwm.ChangeDutyCycle(current_pwm) # set pwm
+                    break
 
-            if notes[0] == '1': hit1 = True
-            if notes[1] == '1': hit2 = True
-            if notes[2] == '1': hit3 = True
+        while not file_is_finished:
+            while True: # wait for trigger event
+                while ( GPIO.input(switch1) and not GPIO.input(switch2) ):  # button is released
+                    pass
+                if not GPIO.input(switch1) and GPIO.input(switch2): # button is pressed
+                    break
 
-            if hit1: GPIO.output(led1, GPIO.HIGH)
-            if hit2: GPIO.output(led2, GPIO.HIGH)
-            if hit3: GPIO.output(led3, GPIO.HIGH)
+            timenow = datetime.datetime.now() # record current brush stroke
+            stampHistory.add(stamp=timenow) # add current time to History
 
-            execution_time = timeit.default_timer() - start_time
-            print "Execution time: ", execution_time
+            rpm = calcrpm() # get rpm
+            if 0<=rpm<=150: rpmHistory.add(rpm) # add rpm to History if it is realistically valid
+            average_rpm = rpmHistory.average_rpm() # get the average (over the last 4) of rpms
 
-            sleeptime = timeinterval - execution_time
-            time.sleep(sleeptime)
+            prediction = stampHistory.getprediction(fromtime=timenow) # get prediction for next hit
+            solenoidQueue.put(prediction) # add prediction to queue
 
-            GPIO.output(led1, GPIO.LOW)
-            GPIO.output(led2, GPIO.LOW)
-            GPIO.output(led3, GPIO.LOW)
+            current_pwm = calcpwm(rpm=average_rpm, pwm=current_pwm, target=75) # get new pwm
+            motor1pwm.ChangeDutyCycle(current_pwm) # set pwm
 
-            if stopLoop == True:
-                shouldLoop = False
+        if stopLoop:
+            while True:
+                prompt_for_loop = raw_input("Would you like to restart the tune [Y/N]? ")
+                prompt_for_loop.lower()
+                if prompt_for_loop == 'y' or prompt_for_loop == 'yes':
+                    shouldLoop == True
+                elif prompt_for_loop == 'n' or prompt_for_loop == 'no':
+                    shouldLoop = False
+                else:
+                    print "Invalid answer to quesiton."
+        if stopLoop == False:
+            print "Looping back and restarting now..."
+            file_is_finished = False
+            line_number = 0
 
 
-except KeyboardInterrupt:  # If CTRL+C is pressed, exit cleanly:
-    print 'KeyboardInterrupt occured'
-
-finally:
-    GPIO.cleanup()  # cleanup all GPIO
+except KeyboardInterrupt: # If CTRL+C is pressed, exit cleanly
+    print "\n"
+finally:  # In any other exit circumstance, exit cleanly.
+    print colour.yellow+"Waiting for solenoidThread to exit..."+colour.end
+    shouldExitThread = True
+    solenoidThread.join()
+    print colour.green+colour.bold+"solenoidThread has exited safely"+colour.end
+    motor1pwm.stop()
+    time.sleep(0.1)
+    GPIO.cleanup()
