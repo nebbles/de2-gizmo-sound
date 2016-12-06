@@ -71,6 +71,7 @@ previoustime = datetime.now()
 default_pwm = 55
 counter = 0
 rpm = 0
+rpms = []
 try:
     print(colour.red+"mstest1")
     print("This program combines the use of the motor and microswitch.")
@@ -109,6 +110,8 @@ try:
                     print("\nButton pressed")
                     print("Counter: "+colour.yellow+str(counter)+colour.end)
                     rpm = calcrpm()
+                    if 0<=rpm<=150:
+                        rpms.append(rpm)
                     print "RPM: "+colour.green+str(rpm)+colour.end
                     pwm = calcpwm(rpm=rpm, pwm=pwm)
                     print "PWM DC: "+colour.red+str(pwm)+colour.end
@@ -123,4 +126,3 @@ finally:  # In any other exit circumstance, exit cleanly.
     motor1pwm.stop()
     time.sleep(0.1)
     GPIO.cleanup()
-    
