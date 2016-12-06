@@ -100,7 +100,7 @@ try:
 
 except KeyboardInterrupt: # If CTRL+C is pressed, exit cleanly
     avg = sum(rpms)/len(rpms)
-    print "For PWM:",cycle,"average RPM is:",avg
+    print "For PWM: "+colour.red+str(cycle)+colour.end+" average RPM is: "+colour.red+str(avg)_colour.end
     print "\n"
 finally:  # In any other exit circumstance, exit cleanly.
     motor1pwm.stop()
