@@ -158,10 +158,12 @@ def solenoid(queue):
         pass
         if shouldExitThread: return
         while not queue.qsize() == 0: # check if Q has item
+            if shouldExitThread: return
             timestamp = queue.get() # dequeue item
             timenow = datetime.datetime.now() # get current time
 
             if tune[line_number][0] == '1': # check if next line begins with zero
+                if shouldExitThread: return
                 pass # if it does then do the usual
                 delay_dt = timestamp - timenow # get current time and subtract from prediction
                 delay = delay_dt.total_seconds() # convert delay into number of seconds
@@ -188,8 +190,10 @@ def solenoid(queue):
 
             elif tune[line_number][0] == '0': # check if next line begins with zero
                 while tune[line_number][0] != '1':
+                    if shouldExitThread: return
                     i = line_number # set the i to the line number
                     while tune[i][0] != '1':
+                        if shouldExitThread: return
                         i += 1
                     number_of_lines = i - line_number + 1
 
@@ -197,6 +201,7 @@ def solenoid(queue):
                     delay = delay_dt.total_seconds() # convert delay into number of seconds
                     delay_fractional = float(delay / number_of_lines)
 
+                    if shouldExitThread: return
                     time.sleep(delay_fractional)
 
                     hit1, hit2, hit3, hit4 = False, False, False, False # set hits all to false
