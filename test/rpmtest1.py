@@ -56,9 +56,13 @@ def calcpwm(rpm, pwm, target=75):
     delta_rpm = abs(rpm-target) # find difference in rpm
     if rpm > target: # if rpm is greater than target then reduce
         new_pwm = pwm - delta_rpm/2 # change the pwm by the difference over two to tend towards perfect value
+        if not 0 < new_pwm < 100:
+            return pwm
         return new_pwm # reduce pwm
     elif rpm < target: # elif rpm is less than target then increase
         new_pwm = pwm + delta_rpm/2
+        if not 0 < new_pwm < 100:
+            return pwm
         return new_pwm # increase pwm
     else:
         return pwm
@@ -107,8 +111,8 @@ try:
                     rpm = calcrpm()
                     print "RPM: "+colour.green+str(rpm)+colour.end
                     pwm = calcpwm(rpm=rpm, pwm=pwm)
-                    motor1pwm.ChangeDutyCycle(pwm)
                     print "PWM DC: "+colour.red+str(pwm)+colour.end
+                    motor1pwm.ChangeDutyCycle(pwm)
                     flag = True
 
 except KeyboardInterrupt: # If CTRL+C is pressed, exit cleanly
