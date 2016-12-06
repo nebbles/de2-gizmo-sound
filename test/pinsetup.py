@@ -6,8 +6,11 @@ import time # Library to slow or give a rest to the script
 import timeit # Alternative timing library for platform specific timing
 import sys # Library to access program arguments and call exits
 import os # Library provides functionality to clear screen
-from datetime import datetime
 import random
+import datetime
+import collections
+import threading
+from Queue import Queue
 
 # Pin definiton using Broadcom scheme
 solenoid1 = 23  # GPIO 16
@@ -16,8 +19,8 @@ solenoid3 = 4   # GPIO 07
 solenoid4 = 17  # GPIO 11
 motor1 = 18     # GPIO 12
 led1 = 25       # GPIO 22
-switch1 = 27    # GPIO 13
-switch2 = 22    # GPIO 15
+switch1 = 6    # GPIO 31
+switch2 = 13    # GPIO 33
 
 # Pin setup
 GPIO.setmode(GPIO.BCM)  # Broadcom pin-numbering scheme
