@@ -60,13 +60,13 @@ try:
     print(colour.red+"mstest1")
     print("This program combines the use of the motor and microswitch.")
     print("Use standardised pin layout."+colour.end)
-    while True:
-        answer = raw_input(colour.red+"\n[C/Q] to confirm / quit: "+colour.end)
-        answer.lower()
-        if answer == 'q':
-            sys.exit()
-        elif answer == 'c':
-            break
+    # while True:
+    #     answer = raw_input(colour.red+"\n[C/Q] to confirm / quit: "+colour.end)
+    #     answer.lower()
+    #     if answer == 'q':
+    #         sys.exit()
+    #     elif answer == 'c':
+    #         break
 
     print(colour.red+"Press "+colour.bold+"CTRL+C"+colour.end+colour.red+" to exit"+colour.end)
     motor1pwm.start(0)
