@@ -7,7 +7,6 @@
     <th>Element</th>
     <th>GPIO Pin</th>
     <th>BCM Pin</th>
-    <th>Colour</th>
     <th>Purpose</th>
     <th>Connected to...</th>
   </tr>
@@ -16,7 +15,6 @@
     <td>GRND</td>
     <td>9,14,20</td>
     <td>-</td>
-    <td></td>
     <td>Common ground</td>
     <td>Proto board input 4</td>
   </tr>
@@ -25,7 +23,6 @@
     <td>S1</td>
     <td>16</td>
     <td>23</td>
-    <td></td>
     <td>I/O Output</td>
     <td>Proto board input 3</td>
   </tr>
@@ -33,7 +30,6 @@
     <td>S2</td>
     <td>18</td>
     <td>24</td>
-    <td></td>
     <td>I/O Output</td>
     <td>Proto board input 1</td>
   </tr>
@@ -43,7 +39,6 @@
     <td>S3</td>
     <td>7</td>
     <td>4</td>
-    <td></td>
     <td>I/O Output</td>
     <td>Proto board input 7</td>
   </tr>
@@ -51,7 +46,6 @@
     <td>S4</td>
     <td>11</td>
     <td>17</td>
-    <td></td>
     <td>I/O Output</td>
     <td>Proto board input 8</td>
   </tr>
@@ -60,7 +54,6 @@
     <td>MOT1</td>
     <td>12</td>
     <td>18</td>
-    <td></td>
     <td>PWM Output</td>
     <td>Proto board input 2</td>
   </tr>
@@ -69,7 +62,6 @@
     <td>MS1-NO</td>
     <td>13</td>
     <td>27</td>
-    <td></td>
     <td>I/O Input</td>
     <td>Proto board input (9)</td>
   </tr>
@@ -77,7 +69,6 @@
     <td>MS1-NC</td>
     <td>15</td>
     <td>22</td>
-    <td></td>
     <td>I/O Input</td>
     <td>Proto board input (10)</td>
   </tr>
@@ -85,7 +76,6 @@
     <td>LED</td>
     <td>22</td>
     <td>25</td>
-    <td></td>
     <td>I/O Output</td>
     <td>Proto board input 3</td>
   </tr>
