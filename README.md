@@ -20,7 +20,7 @@ For further documentation, see the [documentation folder](/documentation/).
 #### Key documentation
   + [Wiring configuration](/documentation/wiring.md)
   + [Full circuit diagram](/documentation/circuit_diagrams/complete_circuit.png)
-  + Proto-pic layout
+  + [Proto-pic layout](/documentation/proto-pic(2) 2.png)
   
 #### Programming logic
 Flowcharts of programming logic and purpose of test programs can be found in [this folder](/documentation/programlogic/).
