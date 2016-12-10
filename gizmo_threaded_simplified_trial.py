@@ -45,6 +45,12 @@ motor1pwm = GPIO.PWM(motor1,100) # set pwm on motor1 pin
 GPIO.setup(switch1, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(switch2, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
+GPIO.output(solenoid1, GPIO.LOW)
+GPIO.output(solenoid2, GPIO.LOW)
+GPIO.output(solenoid3, GPIO.LOW)
+GPIO.output(solenoid4, GPIO.LOW)
+GPIO.output(led1, GPIO.LOW)
+
 ## ----- Set initial values ----- ##
 shouldLoop = True # loop needs to be iniated at least one time
 stopLoop = True # default behaviour is to stop loop after first iteration
@@ -54,9 +60,10 @@ file_is_finished = False
 line_number = 0
 shouldExitThread = False
 
-previoustime = datetime.now()
+previoustime = datetime.datetime.now()
 count_trigger = 0
-default_pwm = 55
+# default_pwm = 55
+default_pwm = 24.5
 rpm = 0
 
 ## ----- Start up parsing ----- ##
@@ -135,7 +142,7 @@ class History:
 
 def calcrpm():
     global previoustime
-    currenttime = datetime.now()
+    currenttime = datetime.datetime.now()
     x = currenttime - previoustime
     x = float(x.total_seconds())
     rpm = 60 / (2*x)
@@ -146,83 +153,65 @@ def calcpwm(rpm, pwm, target=75):
     delta_rpm = abs(rpm-target) # find difference in rpm
     if rpm > target: # if rpm is greater than target then reduce
         new_pwm = pwm - delta_rpm/2 # change the pwm by the difference over two to tend towards perfect value
+        if not 0 < new_pwm < 100:
+            return pwm
         return new_pwm # reduce pwm
     elif rpm < target: # elif rpm is less than target then increase
         new_pwm = pwm + delta_rpm/2
+        if not 0 < new_pwm < 100:
+            return pwm
         return new_pwm # increase pwm
     else:
         return pwm
 
-def solenoid(queue):
-    while True:
-        pass
+def solenoid():
+    global line_number
+    global file_is_finished
+    while line_number < 10:
         if shouldExitThread: return
-        while not queue.qsize() == 0: # check if Q has item
-            if shouldExitThread: return
-            timestamp = queue.get() # dequeue item
-            timenow = datetime.datetime.now() # get current time
 
-            if tune[line_number][0] == '1': # check if next line begins with zero
-                if shouldExitThread: return
-                pass # if it does then do the usual
-                delay_dt = timestamp - timenow # get current time and subtract from prediction
-                delay = delay_dt.total_seconds() # convert delay into number of seconds
-                if delay >= 0:
-                    time.sleep(float(delay)) # sleep for delay
-                    print datetime.datetime.now(), "- Play solenoids!"# print an execution statement with timestamp
+        # choose a delay time (about 0.4)
+        delay_time = (60 / (2*average_rpm) ) - 0.1
+        if delay_time < 0:
+            delay_time = 0
+        print delay_time, "delay_time"
+        # delay by x
+        time.sleep(delay_time)
 
-                    hit1, hit2, hit3, hit4 = False, False, False, False # set hits all to false
-                    notes = tune[line_number]
+        # play line
+        notes = tune[line_number]
+        print datetime.datetime.now(), line_number, notes
 
-                    print line_number, notes
+        hit1, hit2, hit3, hit4 = False, False, False, False # set hits all to false
+        if notes[1] == '1':
+            hit1 = True
+            print "Hit solenoid1"
+        if notes[2] == '1':
+            hit2 = True
+            print "Hit solenoid2"
+        if notes[3] == '1':
+            hit3 = True
+            print "Hit solenoid3"
+        if notes[4] == '1':
+            hit4 = True
+            print "Hit solenoid4"
 
-                    if notes[1] == '1': hit1 = True
-                    if notes[2] == '1': hit2 = True
-                    if notes[3] == '1': hit3 = True
-                    if notes[4] == '1': hit4 = True
+        if hit1: GPIO.output(solenoid1, GPIO.HIGH)
+        if hit2: GPIO.output(solenoid2, GPIO.HIGH)
+        if hit3: GPIO.output(solenoid3, GPIO.HIGH)
+        if hit4: GPIO.output(solenoid4, GPIO.HIGH)
 
-                    if hit1: GPIO.output(solenoid1, GPIO.HIGH)
-                    if hit2: GPIO.output(solenoid2, GPIO.HIGH)
-                    if hit3: GPIO.output(solenoid3, GPIO.HIGH)
-                    if hit4: GPIO.output(solenoid4, GPIO.HIGH)
+        time.sleep(0.1)
 
-                    line_number += 1
+        GPIO.output(solenoid1, GPIO.LOW)
+        GPIO.output(solenoid2, GPIO.LOW)
+        GPIO.output(solenoid3, GPIO.LOW)
+        GPIO.output(solenoid4, GPIO.LOW)
 
-            elif tune[line_number][0] == '0': # check if next line begins with zero
-                while tune[line_number][0] != '1':
-                    if shouldExitThread: return
-                    i = line_number # set the i to the line number
-                    while tune[i][0] != '1':
-                        if shouldExitThread: return
-                        i += 1
-                    number_of_lines = i - line_number + 1
+        line_number += 1
 
-                    delay_dt = timestamp - timenow # get current time and subtract from prediction
-                    delay = delay_dt.total_seconds() # convert delay into number of seconds
-                    delay_fractional = float(delay / number_of_lines)
-
-                    if shouldExitThread: return
-                    time.sleep(delay_fractional)
-
-                    hit1, hit2, hit3, hit4 = False, False, False, False # set hits all to false
-                    notes = tune[line_number]
-
-                    print line_number, notes
-
-                    if notes[1] == '1': hit1 = True
-                    if notes[2] == '1': hit2 = True
-                    if notes[3] == '1': hit3 = True
-                    if notes[4] == '1': hit4 = True
-
-                    if hit1: GPIO.output(solenoid1, GPIO.HIGH)
-                    if hit2: GPIO.output(solenoid2, GPIO.HIGH)
-                    if hit3: GPIO.output(solenoid3, GPIO.HIGH)
-                    if hit4: GPIO.output(solenoid4, GPIO.HIGH)
-
-                    line_number += 1
-
-            else:
-                print "Parsing error!"
+    file_is_finished = True
+    return
 
 ## ----- Begin program ----- ##
 print "DE2 Gizmo Group Project"
@@ -235,48 +224,63 @@ print loopstatement
 print "Tune being read from: " + inputfile
 
 solenoidQueue = Queue() # create a Queue
-solenoidThread = threading.Thread(target=solenoid,args=[solenoidQueue]) # create thread
+solenoidThread = threading.Thread(target=solenoid) # create thread
 solenoidThread.setDaemon = True # make thread a daemon thread
-solenoidThread.start() # start the thread (it will do nothing until item in queue)
-stampHistory = History(capacity=3)
-rpmHistory = History(capacity=4)
-
+# stampHistory = History(capacity=3) # create a History object for tigger events
+rpmHistory = History(capacity=4) # create an History object for rpm
+rpmHistory.add(75) # add a default starting rpm so average can be calculated
+average_rpm = rpmHistory.average_rpm() # get the average rpm
+print len(tune),"len of tune"
 try:
     while shouldLoop:
+        motor1pwm.start(0)
         motor1pwm.ChangeDutyCycle(default_pwm) # set pwm at default_pwm
         current_pwm = default_pwm
+        # for i in xrange(0, 4): # for first 10 trigger counts
+        #     flag = True
+        #     while True:
+        #         if GPIO.input(switch1) and not GPIO.input(switch2):  # button is released
+        #             if flag:
+        #                 print("\nButton released")
+        #                 flag = False
+        #         elif not GPIO.input(switch1) and GPIO.input(switch2):  # button is pressed:
+        #             if not flag:
+        #                 flag = True
+        #                 print("\nButton pressed")
+        #                 print("Iteration: "+colour.yellow+str(i)+colour.end)
+        #
+        #                 print "tag 4"
+        #                 rpm = calcrpm() # get rpm
+        #                 if 0<=rpm<=150: rpmHistory.add(rpm)
+        #                 average_rpm = rpmHistory.average_rpm()
+        #                 print "RPM: "+colour.green+str(rpm)+colour.end
+        #
+        #                 current_pwm = calcpwm(rpm=average_rpm, pwm=current_pwm, target=75) # get new pwm
+        #                 print "PWM DC: "+colour.red+str(current_pwm)+colour.end
+        #                 motor1pwm.ChangeDutyCycle(current_pwm) # set pwm
+        #
+        #                 break
+        solenoidThread.start() # start the thread (it will do nothing until item in queue)
 
-        for i in xrange(0, 10): # for first 10 trigger counts
-            while True:
-                while ( GPIO.input(switch1) and not GPIO.input(switch2) ):  # button is released
-                    pass
-                if not GPIO.input(switch1) and GPIO.input(switch2): # button is pressed
-                    rpm = calcrpm() # get rpm
-                    if 0<=rpm<=150: rpmHistory.add(rpm)
-                    average_rpm = rpmHistory.average_rpm()
-                    current_pwm = calcpwm(rpm=average_rpm, pwm=current_pwm, target=75) # get new pwm
-                    motor1pwm.ChangeDutyCycle(current_pwm) # set pwm
-                    break
-
+        flag = True
         while not file_is_finished:
-            while True: # wait for trigger event
-                while ( GPIO.input(switch1) and not GPIO.input(switch2) ):  # button is released
-                    pass
-                if not GPIO.input(switch1) and GPIO.input(switch2): # button is pressed
-                    break
+            if GPIO.input(switch1) and not GPIO.input(switch2):  # button is released
+                if flag:
+                    # print("\nButton released")
+                    flag = False
+                    GPIO.output(led1, GPIO.LOW)
+            elif not GPIO.input(switch1) and GPIO.input(switch2):  # button is pressed:
+                if not flag:
+                    flag = True
+                    GPIO.output(led1, GPIO.HIGH)
 
-            timenow = datetime.datetime.now() # record current brush stroke
-            stampHistory.add(stamp=timenow) # add current time to History
+                    rpm = calcrpm() # get rpm
+                    if 0<=rpm<=150: rpmHistory.add(rpm) # add rpm to History if it is realistically valid
+                    average_rpm = rpmHistory.average_rpm() # get the average (over the last 4) of rpms
 
-            rpm = calcrpm() # get rpm
-            if 0<=rpm<=150: rpmHistory.add(rpm) # add rpm to History if it is realistically valid
-            average_rpm = rpmHistory.average_rpm() # get the average (over the last 4) of rpms
-
-            prediction = stampHistory.getprediction(fromtime=timenow) # get prediction for next hit
-            solenoidQueue.put(prediction) # add prediction to queue
-
-            current_pwm = calcpwm(rpm=average_rpm, pwm=current_pwm, target=75) # get new pwm
-            motor1pwm.ChangeDutyCycle(current_pwm) # set pwm
+                    current_pwm = calcpwm(rpm=average_rpm, pwm=current_pwm, target=75) # get new pwm
+                    # motor1pwm.ChangeDutyCycle(current_pwm) # set pwm
+                    motor1pwm.ChangeDutyCycle(24.5) # set pwm
 
         if stopLoop:
             while True:
@@ -291,16 +295,16 @@ try:
         if stopLoop == False:
             print "Looping back and restarting now..."
             file_is_finished = False
-            line_number = 0
+        #     line_number = 0
 
 
-except KeyboardInterrupt: # If CTRL+C is pressed, exit cleanly
-    print "\n"
+# except KeyboardInterrupt: # If CTRL+C is pressed, exit cleanly
+#     print "\n"
 finally:  # In any other exit circumstance, exit cleanly.
     print colour.yellow+"Waiting for solenoidThread to exit..."+colour.end
     shouldExitThread = True
     solenoidThread.join()
     print colour.green+colour.bold+"solenoidThread has exited safely"+colour.end
     motor1pwm.stop()
-    time.sleep(0.1)
+    time.sleep(0.2)
     GPIO.cleanup()
