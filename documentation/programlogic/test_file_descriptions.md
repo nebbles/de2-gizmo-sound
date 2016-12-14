@@ -3,6 +3,14 @@
 ## Contents
 
 + [motortest.py](#motortestpy)
++ [mstest0.py](#mstest0py)
++ [mstest1.py](#mstest1py)
++ [pinsetup.py](#pinsetuppy)
++ [rpmtest1.py](#rpmtest1py)
++ [pinsetup.py](#pinsetuppy)
++ [solenoidtest3.py](#solenoidtest3py)
++ [synctest1.py](#synctest1py)
++ [synctest2.py](#synctest2py)
 
 ### motortest.py
 
