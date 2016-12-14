@@ -15,6 +15,8 @@ Group 1: **STOMP**
 
 ## DE2 Gizmo Group Project on Sound
 
+**For the final project videos visit our [Google Drive](http://bit.ly/de2-gizmo-sound).**
+
 For further documentation, see the [documentation folder](/documentation/).
 
 #### Key documentation
