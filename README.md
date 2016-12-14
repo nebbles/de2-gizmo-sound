@@ -23,7 +23,9 @@ For further documentation, see the [documentation folder](/documentation/).
   + [Proto-pic layout](/documentation/proto-pic(2) 2.png)
   
 #### Programming logic
-Flowcharts of programming logic and purpose of test programs can be found in [this folder](/documentation/programlogic/).
+Flow diagram for final program [version 1](documentation/programlogic/program v1.png).  
+Flow diagram for final program [version 2](documentation/programlogic/program v2.png).  
+Descriptions of the test programs can be found in [this file](documentation/programlogic/test_file_descriptions.md).
 
 #### Wiki - guides and general information
 For general information and guides, visit the [repository wiki](https://github.com/nebbles/de2-gizmo-sound/wiki).
